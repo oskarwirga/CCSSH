@@ -1,6 +1,6 @@
-#include "OW2RootListController.h"
+#include "OWPRootListController.h"
 
-@implementation OW2RootListController
+@implementation OWPRootListController
 
 - (NSArray *)specifiers {
 	if (!_specifiers) {
