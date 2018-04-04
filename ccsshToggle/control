@@ -1,0 +1,10 @@
+Package: com.oskarw.ccsshtoggle
+Name: CCSSHToggle
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: A SSH button for your Control Center.
+Author: Oskar Wirga
+Section: Control Center (Modules)
+Maintainer: Oskar Wirga <oskar@wirga.com>
+Depends: firmware (>= 11.0), com.ioscreatix.silo
+Conflicts: com.oskarw.ccsshtoggle
