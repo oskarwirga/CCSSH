@@ -31,4 +31,34 @@ the generation of a class list and an automatic constructor.
 
 // Always make sure you clean up after yourself; Not doing so could have grave consequences!
 %end
+#import <UIKit/UIKit.h>
+#import <spawn.h>
+
+
+void viewsshconnections() {
+    UIWindow* topWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    topWindow.rootViewController = [UIViewController new];
+    topWindow.windowLevel = UIWindowLevelAlert + 1;
+
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"SSH Connections" 
+                                message:@"root@127.0.0.1\noskar@127.0.0.2" 
+                                preferredStyle:UIAlertControllerStyleAlert];
+
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",@"confirm") 
+                      style:UIAlertActionStyleCancel 
+                      handler:^(UIAlertAction * _Nonnull action) {
+    // continue your work
+    // important to hide the window after work completed.
+    // this also keeps a reference to the window until the action is invoked.
+    topWindow.hidden = YES;
+    }]];
+
+    [topWindow makeKeyAndVisible];
+    [topWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+    
+}
+
+%ctor {
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)viewsshconnections, CFSTR("com.oskarw.ccssh/viewsshconnections"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+}
 */

@@ -1,6 +1,8 @@
+#ARCHS = armv7 armv7s arm64
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = CCSSH
+CCSSH_FRAMEWORKS = UIKit 
 CCSSH_FILES = Tweak.xm
 include $(THEOS_MAKE_PATH)/tweak.mk
 

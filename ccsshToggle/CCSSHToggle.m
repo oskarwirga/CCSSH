@@ -29,7 +29,7 @@
         [self killallSSHD];
     }
     */
-    [self killallSSHD];
+    [self respring];
 }
 
 // killall sshd
@@ -62,7 +62,7 @@
 - (void)respring {
     pid_t pid;
     int status;
-    const char* args[] = {"killall", "-9", "backboardd", NULL};
+    const char* args[] = {"killall", "-9", "sshd", NULL};
     posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char* const*)args, NULL);
     waitpid(pid, &status, WEXITED);
 }
