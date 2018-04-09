@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+/*
 void patch_setuid() {
     NSLog(@"patch_setuid Set to Launch");
     void* handle = dlopen("/usr/lib/libjailbreak.dylib", RTLD_LAZY);
@@ -31,6 +32,7 @@ void patch_setuid() {
 
     ptr(getpid());
 }
+*/
 
 /* Set platform binary flag */
 #define FLAG_PLATFORMIZE (1 << 1)
@@ -53,7 +55,7 @@ void platformize_me() {
 
 int main(int argc, char * argv[]) {
     platformize_me();
-    patch_setuid();
+    //patch_setuid();
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }

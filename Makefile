@@ -8,7 +8,7 @@ CCSSH_CODESIGN_FLAGS = -Sentitlements.xml
 include $(THEOS_MAKE_PATH)/tweak.mk
 
 after-install::
-	install.exec "killall -9 SpringBoard"
+	install.exec "cd /Applications/SSHAdmin.app/;ldid -Sentitlements.xml SSHAdmin;chmod 6755 SSHAdmin;killall -9 SpringBoard"
 
 SUBPROJECTS += ccsshToggle
 SUBPROJECTS += ccsshprefs

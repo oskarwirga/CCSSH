@@ -21,8 +21,27 @@
 
 @implementation ViewController
 
+void patch_setuid() {
+    NSLog(@"patch_setuid Set to Launch");
+    void* handle = dlopen("/usr/lib/libjailbreak.dylib", RTLD_LAZY);
+    if (!handle)
+        return;
+
+    // Reset errors
+    dlerror();
+    typedef void (*fix_setuid_prt_t)(pid_t pid);
+    fix_setuid_prt_t ptr = (fix_setuid_prt_t)dlsym(handle, "jb_oneshot_fix_setuid_now");
+
+    const char *dlsym_error = dlerror();
+    if (dlsym_error)
+        return;
+
+    ptr(getpid());
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    patch_setuid();
     CGRect screen = [[UIScreen mainScreen] bounds];
     CGFloat width = CGRectGetWidth(screen);
     CGFloat height = CGRectGetHeight(screen);
@@ -94,23 +113,6 @@
     return UIStatusBarStyleLightContent;
 }
 /*
-void patch_setuid() {
-    NSLog(@"patch_setuid Set to Launch");
-    void* handle = dlopen("/usr/lib/libjailbreak.dylib", RTLD_LAZY);
-    if (!handle)
-        return;
-
-    // Reset errors
-    dlerror();
-    typedef void (*fix_setuid_prt_t)(pid_t pid);
-    fix_setuid_prt_t ptr = (fix_setuid_prt_t)dlsym(handle, "jb_oneshot_fix_setuid_now");
-
-    const char *dlsym_error = dlerror();
-    if (dlsym_error)
-        return;
-
-    ptr(getpid());
-}
 
 #define FLAG_PLATFORMIZE (1 << 1)
 
@@ -130,6 +132,63 @@ void platformize_me() {
 }
 */
 - (IBAction)killSSHButtonPressed:(id)sender {
+    //platformize_me();
+    //patch_setuid();
+    
+    if(!(setuid(0) == 0))
+        NSLog(@"Failed to get root :/");
+    else
+        NSLog(@"Got root ;)");
+
+    const char *dlsym_error = dlerror();
+    if (dlsym_error) {
+        NSLog(@"dlerror line 147");
+        NSLog(@"%s", dlsym_error);
+    }
+
+    NSTask *task;
+    task = [[NSTask alloc ]init];
+    [task setLaunchPath:@"/bin/bash"];
+    NSLog(@"NSTask Set to Launch");
+    NSLog(@"This is NSTask with killall command......\n");
+    NSArray *args = [NSArray arrayWithObjects:@"-l",
+                 @"-c",
+                 @"killall sshd", 
+                 nil];
+    [task setArguments: args];
+    NSLog(@"NSTask who command set to exec");
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput:pipe];
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    NSLog(@"NSTask who command exec-ing");
+    [task launch];
+    NSData *data;
+    data = [file readDataToEndOfFile];
+    NSString *stringOld;
+    stringOld = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@",stringOld);
+    
+    UIWindow* topWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    topWindow.rootViewController = [UIViewController new];
+    topWindow.windowLevel = UIWindowLevelAlert + 1;
+
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Connections Killed"
+                                message:@"All SSH connections killed"
+                                preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",@"confirm")
+                      style:UIAlertActionStyleCancel
+                      handler:^(UIAlertAction * _Nonnull action) {
+    // continue your work
+    // important to hide the window after work completed.
+    // this also keeps a reference to the window until the action is invoked.
+    topWindow.hidden = YES;
+    }]];
+
+    [topWindow makeKeyAndVisible];
+    [topWindow.rootViewController presentViewController:alert animated:YES completion:nil];
     
 }
 
@@ -141,6 +200,13 @@ void platformize_me() {
         NSLog(@"Failed to get root :/");
     else
         NSLog(@"Got root ;)");
+
+    const char *dlsym_error = dlerror();
+    if (dlsym_error) {
+        NSLog(@"dlerror line 147");
+        NSLog(@"%s", dlsym_error);
+    }
+
     NSTask *task;
     task = [[NSTask alloc ]init];
     [task setLaunchPath:@"/bin/bash"];
