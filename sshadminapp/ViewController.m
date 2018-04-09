@@ -21,6 +21,52 @@
 
 @implementation ViewController
 
+bool isSSHENabled(){
+    if(!(setuid(0) == 0))
+        NSLog(@"Failed to get root :/");
+    else
+        NSLog(@"Got root ;)");
+
+    const char *dlsym_error = dlerror();
+    if (dlsym_error) {
+        NSLog(@"dlerror line 147");
+        NSLog(@"%s", dlsym_error);
+    }
+
+    NSTask *task;
+    task = [[NSTask alloc ]init];
+    [task setLaunchPath:@"/bin/bash"];
+    NSLog(@"NSTask Set to Launch");
+    NSLog(@"This is NSTask with who command......\n");
+    NSArray *args = [NSArray arrayWithObjects:@"-l",
+                 @"-c",
+                 @"launchctl list | grep ssh", 
+                 nil];
+    [task setArguments: args];
+    NSLog(@"NSTask who command set to exec");
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput:pipe];
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    NSLog(@"NSTask who command exec-ing");
+    [task launch];
+    NSData *data;
+    data = [file readDataToEndOfFile];
+    NSString *stringOld;
+    stringOld = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@",stringOld);
+
+    NSString *processName = @"com.openssh.sshd";
+    if ([stringOld containsString:processName]) {
+        NSLog(@"string contains bla!");
+        return YES;
+    } else {
+        NSLog(@"string does not contain bla");
+        return NO;
+    }
+}
+
 void patch_setuid() {
     NSLog(@"patch_setuid Set to Launch");
     void* handle = dlopen("/usr/lib/libjailbreak.dylib", RTLD_LAZY);
@@ -39,9 +85,91 @@ void patch_setuid() {
     ptr(getpid());
 }
 
+void disableSSH() {
+    if(!(setuid(0) == 0))
+        NSLog(@"Failed to get root :/");
+    else
+        NSLog(@"Got root ;)");
+
+    const char *dlsym_error = dlerror();
+    if (dlsym_error) {
+        NSLog(@"dlerror line 147");
+        NSLog(@"%s", dlsym_error);
+    }
+
+    NSTask *task;
+    task = [[NSTask alloc ]init];
+    [task setLaunchPath:@"/bin/bash"];
+    NSLog(@"NSTask Set to Launch");
+    NSLog(@"This is NSTask with killall command......\n");
+    NSArray *args = [NSArray arrayWithObjects:@"-l",
+                 @"-c",
+                 @"killall sshd;launchctl unload /Library/LaunchDaemons/com.openssh.sshd.plist", 
+                 nil];
+    [task setArguments: args];
+    NSLog(@"NSTask who command set to exec");
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput:pipe];
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    NSLog(@"NSTask who command exec-ing");
+    [task launch];
+    NSData *data;
+    data = [file readDataToEndOfFile];
+    NSString *stringOld;
+    stringOld = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@",stringOld);
+
+}
+
+void enableSSH() {
+    if(!(setuid(0) == 0))
+        NSLog(@"Failed to get root :/");
+    else
+        NSLog(@"Got root ;)");
+
+    const char *dlsym_error = dlerror();
+    if (dlsym_error) {
+        NSLog(@"dlerror line 147");
+        NSLog(@"%s", dlsym_error);
+    }
+
+    NSTask *task;
+    task = [[NSTask alloc ]init];
+    [task setLaunchPath:@"/bin/bash"];
+    NSLog(@"NSTask Set to Launch");
+    NSLog(@"This is NSTask with killall command......\n");
+    NSArray *args = [NSArray arrayWithObjects:@"-l",
+                 @"-c",
+                 @"launchctl load /Library/LaunchDaemons/com.openssh.sshd.plist", 
+                 nil];
+    [task setArguments: args];
+    NSLog(@"NSTask who command set to exec");
+    NSPipe *pipe;
+    pipe = [NSPipe pipe];
+    [task setStandardOutput:pipe];
+    NSFileHandle *file;
+    file = [pipe fileHandleForReading];
+    NSLog(@"NSTask who command exec-ing");
+    [task launch];
+    NSData *data;
+    data = [file readDataToEndOfFile];
+    NSString *stringOld;
+    stringOld = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"%@",stringOld);
+
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     patch_setuid();
+
+    //CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)enableSSH, CFSTR("com.oskarw.sshadmin/enablessh"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+
+    //CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)disableSSH, CFSTR("com.oskarw.sshadmin/disablessh"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+
     CGRect screen = [[UIScreen mainScreen] bounds];
     CGFloat width = CGRectGetWidth(screen);
     CGFloat height = CGRectGetHeight(screen);
@@ -90,7 +218,11 @@ void patch_setuid() {
     // SSH Enabled Switch
     _sshEnabledSwitch=[[UISwitch alloc] 
         initWithFrame:CGRectMake(width/2 - 51/2, height/2 + 80, 51, 31)];
-    [_sshEnabledSwitch setOn:YES];
+    if (isSSHENabled())
+        [_sshEnabledSwitch setOn:YES];
+    else
+        [_sshEnabledSwitch setOn:NO];
+
     [_sshEnabledSwitch addTarget:self action:@selector(sshEnabledSwitch:) 
                 forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_sshEnabledSwitch];//Add it to the view of your choice.
@@ -273,7 +405,92 @@ void platformize_me() {
 }
 
 - (IBAction)sshEnabledSwitch:(id)sender {
-    
+    UISwitch *sshSwitch = (UISwitch *)sender;
+    if (!(sshSwitch.on)){
+        if(!(setuid(0) == 0))
+            NSLog(@"Failed to get root :/");
+        else
+            NSLog(@"Got root ;)");
+
+        const char *dlsym_error = dlerror();
+        if (dlsym_error) {
+            NSLog(@"dlerror line 147");
+            NSLog(@"%s", dlsym_error);
+        }
+        NSTask *task;
+        task = [[NSTask alloc ]init];
+        [task setLaunchPath:@"/bin/bash"];
+        NSLog(@"NSTask Set to Launch");
+        NSLog(@"This is NSTask with who command......\n");
+        NSArray *args = [NSArray arrayWithObjects:@"-l",
+                     @"-c",
+                     @"killall sshd; launchctl unload /Library/LaunchDaemons/com.openssh.sshd.plist", 
+                     nil];
+        [task setArguments: args];
+        NSLog(@"NSTask who command exec-ing");
+        [task launch];
+        UIWindow* topWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        topWindow.rootViewController = [UIViewController new];
+        topWindow.windowLevel = UIWindowLevelAlert + 1;
+
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"SSH Disabled"
+                                    message:@"All SSH connections have been terminated and SSH has been disabled"
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",@"confirm")
+                          style:UIAlertActionStyleCancel
+                          handler:^(UIAlertAction * _Nonnull action) {
+        // continue your work
+        // important to hide the window after work completed.
+        // this also keeps a reference to the window until the action is invoked.
+        topWindow.hidden = YES;
+        }]];
+
+        [topWindow makeKeyAndVisible];
+        [topWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+    }else{
+        if(!(setuid(0) == 0))
+            NSLog(@"Failed to get root :/");
+        else
+            NSLog(@"Got root ;)");
+
+        const char *dlsym_error = dlerror();
+        if (dlsym_error) {
+            NSLog(@"dlerror line 147");
+            NSLog(@"%s", dlsym_error);
+        }
+
+        NSTask *task;
+        task = [[NSTask alloc ]init];
+        [task setLaunchPath:@"/bin/bash"];
+        NSLog(@"NSTask Set to Launch");
+        NSLog(@"This is NSTask with who command......\n");
+        NSArray *args = [NSArray arrayWithObjects:@"-l",
+                     @"-c",
+                     @"launchctl load /Library/LaunchDaemons/com.openssh.sshd.plist", 
+                     nil];
+        [task setArguments: args];
+        [task launch];
+        UIWindow* topWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        topWindow.rootViewController = [UIViewController new];
+        topWindow.windowLevel = UIWindowLevelAlert + 1;
+
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"SSH Enabled"
+                                    message:@"SSH has been enabled"
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",@"confirm")
+                          style:UIAlertActionStyleCancel
+                          handler:^(UIAlertAction * _Nonnull action) {
+        // continue your work
+        // important to hide the window after work completed.
+        // this also keeps a reference to the window until the action is invoked.
+        topWindow.hidden = YES;
+        }]];
+
+        [topWindow makeKeyAndVisible];
+        [topWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 @end

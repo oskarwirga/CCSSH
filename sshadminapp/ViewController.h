@@ -16,6 +16,8 @@
 @property (nonatomic, strong) UILabel *sshEnabledLabel;
 @property (nonatomic, strong) UISwitch *sshEnabledSwitch;
 
+void enableSSH();
+void disableSSH();
 - (IBAction)killSSHButtonPressed:(id)sender;
 - (IBAction)viewSSHButtonPressed:(id)sender;
 - (IBAction)sshEnabledSwitch:(id)sender;
