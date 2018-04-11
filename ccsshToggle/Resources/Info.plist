@@ -25,6 +25,11 @@
 		<integer>1</integer>
 		<integer>2</integer>
 	</array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>sshadmin</string>
+        <string>com.oskarw.sshadmin</string>
+    </array>
 	<key>NSPrincipalClass</key>
 	<string>CCSSHToggle</string>
 	<key>ModuleSize</key>

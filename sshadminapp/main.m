@@ -54,6 +54,7 @@ void platformize_me() {
 }
 
 int main(int argc, char * argv[]) {
+    NSLog(@"MAIN");
     platformize_me();
     //patch_setuid();
     @autoreleasepool {
