@@ -8,7 +8,7 @@ CCSSH_FILES = Tweak.xm
 include $(THEOS_MAKE_PATH)/tweak.mk
 
 after-install::
-	install.exec "cd /Applications/SSHAdmin.app; ldid -Sentitlements.xml SSHAdmin; chmod 6755 SSHAdmin;killall -9 SpringBoard"
+	install.exec "cd /Applications/SSHAdmin.app; ldid -Sentitlements.xml SSHAdmin; chmod 6755 SSHAdmin; chmod 755 Info.plist;killall -9 SpringBoard"
 
 SUBPROJECTS += ccsshToggle
 SUBPROJECTS += ccsshprefs

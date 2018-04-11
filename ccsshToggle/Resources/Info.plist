@@ -28,7 +28,6 @@
     <key>LSApplicationQueriesSchemes</key>
     <array>
         <string>sshadmin</string>
-        <string>com.oskarw.sshadmin</string>
     </array>
 	<key>NSPrincipalClass</key>
 	<string>CCSSHToggle</string>

@@ -101,10 +101,9 @@
     [super refreshState];
 
     NSLog(@"Tapped CC Icon");
-    /*
-    NSURL *customURL = [NSURL URLWithString:@"sshadminapp://"];
+    NSURL *customURL = [NSURL URLWithString:@"sshadmin://"];
     UIApplication *application = [UIApplication sharedApplication];
-    NSURL *URL = [NSURL URLWithString:@"sshadminapp://"];
+    NSURL *URL = [NSURL URLWithString:@"sshadmin://"];
     if ([application respondsToSelector:@selector(openURL:options:completionHandler:)]){
         [application openURL:URL options:@{}
         completionHandler:^(BOOL success) {
@@ -113,6 +112,5 @@
     }else{
         NSLog(@"Failed to Open %@",customURL);
     }
-    */
 }
 @end
