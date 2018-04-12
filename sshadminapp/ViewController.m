@@ -134,18 +134,21 @@ void enableSSH() {
                action:@selector(killSSHButtonPressed:)
      forControlEvents:UIControlEventTouchUpInside];
     [_killAllSSHButton setTitle:@"Kill SSH Sessions" forState:UIControlStateNormal];
-    [_killAllSSHButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [_killAllSSHButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     _killAllSSHButton.frame = CGRectMake(width/2 - 100, height/2 - 80, 200.0, 40.0);
     _killAllSSHButton.layer.cornerRadius = 10; 
     _killAllSSHButton.clipsToBounds = YES;
     _killAllSSHButton.layer.borderWidth = 2.0f;
-    _killAllSSHButton.layer.borderColor = [UIColor redColor].CGColor;
-    [self.view addSubview:_killAllSSHButton];
-    if (isSSHENabled())
+    if (isSSHENabled()){
         _killAllSSHButton.enabled = YES;
-    else
+        _killAllSSHButton.layer.borderColor = [UIColor redColor].CGColor;
+        [_killAllSSHButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    }else{
         _killAllSSHButton.enabled = NO;
+        _killAllSSHButton.layer.borderColor = [UIColor grayColor].CGColor;
+        [_killAllSSHButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    }
+    [self.view addSubview:_killAllSSHButton];
     
     // View SSH Sessions Button
     _viewSSHButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -153,18 +156,21 @@ void enableSSH() {
         action:@selector(viewSSHButtonPressed:)
         forControlEvents:UIControlEventTouchUpInside];
     [_viewSSHButton setTitle:@"View SSH Sessions" forState:UIControlStateNormal];
-    [_viewSSHButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_viewSSHButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     _viewSSHButton.frame = CGRectMake(width/2 - 100, height/2, 200.0, 40.0);
     _viewSSHButton.layer.cornerRadius = 10; 
     _viewSSHButton.clipsToBounds = YES;
     _viewSSHButton.layer.borderWidth = 2.0f;
-    _viewSSHButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    [self.view addSubview:_viewSSHButton];
-    if (isSSHENabled())
+    if (isSSHENabled()){
         _viewSSHButton.enabled = YES;
-    else
+        [_viewSSHButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _viewSSHButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    }else{
         _viewSSHButton.enabled = NO;
+        [_viewSSHButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        _viewSSHButton.layer.borderColor = [UIColor grayColor].CGColor;
+    }
+    [self.view addSubview:_viewSSHButton];
     
     // SSH Enabled Switch
     _sshEnabledSwitch=[[UISwitch alloc] 
