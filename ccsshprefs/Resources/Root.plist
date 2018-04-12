@@ -5,16 +5,6 @@
 	<key>items</key>
 	<array>
         <dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>alignment</key>
-			<string>1</string>
-			<key>action</key>
-			<string>viewsshconnections</string>
-			<key>label</key>
-			<string>View SSH Connections</string>
-		</dict>
-        <dict>
             <key>label</key>
             <string>Contact</string>
             <key>cell</key>
@@ -44,6 +34,6 @@
         </dict>
 	</array>
 	<key>title</key>
-	<string>Control Center SSH</string>
+	<string>SSH Admin</string>
 </dict>
 </plist>

@@ -3,7 +3,7 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = CCSSH
 CCSSH_FRAMEWORKS = UIKit 
-CCSSH_FILES = Tweak.xm
+#CCSSH_FILES = Tweak.xm
 #CCSSH_CODESIGN_FLAGS = -Sentitlements.xml
 include $(THEOS_MAKE_PATH)/tweak.mk
 

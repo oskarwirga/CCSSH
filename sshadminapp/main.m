@@ -5,7 +5,6 @@
 //  Created by Oskar Wirga on 4/7/18.
 //  Copyright © 2018 Oskar Wirga. All rights reserved.
 //
-
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #include <dlfcn.h>
@@ -13,26 +12,6 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-/*
-void patch_setuid() {
-    NSLog(@"patch_setuid Set to Launch");
-    void* handle = dlopen("/usr/lib/libjailbreak.dylib", RTLD_LAZY);
-    if (!handle)
-        return;
-
-    // Reset errors
-    dlerror();
-    typedef void (*fix_setuid_prt_t)(pid_t pid);
-    fix_setuid_prt_t ptr = (fix_setuid_prt_t)dlsym(handle, "jb_oneshot_fix_setuid_now");
-
-    const char *dlsym_error = dlerror();
-    if (dlsym_error)
-        return;
-
-    ptr(getpid());
-}
-*/
 
 /* Set platform binary flag */
 #define FLAG_PLATFORMIZE (1 << 1)
@@ -54,9 +33,7 @@ void platformize_me() {
 }
 
 int main(int argc, char * argv[]) {
-    NSLog(@"MAIN");
     platformize_me();
-    //patch_setuid();
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }

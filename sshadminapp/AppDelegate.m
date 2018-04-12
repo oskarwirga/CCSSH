@@ -24,8 +24,6 @@
     self.window.rootViewController = [[ViewController alloc] init];
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
-    //CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)enableSSH, CFSTR("com.oskarw.sshadmin/enablessh"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
-    //CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)disableSSH, CFSTR("com.oskarw.sshadmin/disablessh"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
     return YES;
 }
 

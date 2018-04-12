@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>CCSSHToggle</string>
+	<string>SSH Toggle</string>
 	<key>CFBundleExecutable</key>
 	<string>CCSSHToggle</string>
 	<key>CFBundleIdentifier</key>

@@ -15,6 +15,8 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *sshEnabledLabel;
 @property (nonatomic, strong) UISwitch *sshEnabledSwitch;
+@property (nonatomic, strong) UIButton *killAllSSHButton;
+@property (nonatomic, strong) UIButton *viewSSHButton;
 
 void enableSSH();
 void disableSSH();
