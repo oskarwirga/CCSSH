@@ -17,11 +17,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    // Set window preferences 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.frame = [[UIScreen mainScreen] nativeBounds];
-    // Override point for customization after application launch.
     self.window.rootViewController = [[ViewController alloc] init];
+    // Make the window a black background
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
     return YES;

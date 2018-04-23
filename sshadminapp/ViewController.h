@@ -7,17 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-
+// Keep track of button presses
 @interface ViewController : UIViewController {
     int buttonPressCount;
 }
-
+// Define our UI objects
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *sshEnabledLabel;
 @property (nonatomic, strong) UISwitch *sshEnabledSwitch;
 @property (nonatomic, strong) UIButton *killAllSSHButton;
 @property (nonatomic, strong) UIButton *viewSSHButton;
-
+// Define our methods for these objects
 void enableSSH();
 void disableSSH();
 - (IBAction)killSSHButtonPressed:(id)sender;

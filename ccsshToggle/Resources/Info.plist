@@ -4,10 +4,13 @@
 <dict>
 	<key>CFBundleName</key>
 	<string>SSH Toggle</string>
+
 	<key>CFBundleExecutable</key>
-	<string>CCSSHToggle</string>
+    <string>CCSSHToggle</string>
+
 	<key>CFBundleIdentifier</key>
-	<string>com.oskarw.ccsshtoggle</string>
+    <string>com.oskarw.ccsshtoggle</string>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -25,10 +28,12 @@
 		<integer>1</integer>
 		<integer>2</integer>
 	</array>
+
     <key>LSApplicationQueriesSchemes</key>
     <array>
         <string>sshadmin</string>
     </array>
+
 	<key>NSPrincipalClass</key>
 	<string>CCSSHToggle</string>
 	<key>ModuleSize</key>

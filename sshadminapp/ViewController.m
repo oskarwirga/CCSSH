@@ -195,7 +195,7 @@ void enableSSH() {
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
+// Set the notification menu to be light to contrast with the black background
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
 }
@@ -215,7 +215,7 @@ void enableSSH() {
                  nil];
     [task setArguments: args];
     [task launch];
-    
+    // Make a popup informing the user that connections have been terminated
     UIWindow* topWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     topWindow.rootViewController = [UIViewController new];
     topWindow.windowLevel = UIWindowLevelAlert + 1;
