@@ -1,9 +1,9 @@
 Package: com.oskarw.ccssh
 Name: CCSSH
 Depends: mobilesubstrate, com.ioscreatix.silo
-Version: 0.0.1
+Version: 1.0.0
 Architecture: iphoneos-arm
 Description: Adds a Control Center and Settings Pref option to toggle SSH
 Maintainer: Oskar Wirga <oskar@wirga.com>
 Author: Oskar Wirga
-Section: Tweaks
+Section: Application
